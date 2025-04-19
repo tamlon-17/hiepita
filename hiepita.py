@@ -34,19 +34,22 @@ with st.form(key='input_form'):
 
 if submit_button:
     temp_df = atl.ave_temp_list(a_area, city, begin_date, 30, int(years))
-    leaf_age_her = ((temp_df - 7.0)*0.0237).clip(lower=0).round(2)
-    leaf_age_cul = ((temp_df - 7.0)*0.021).clip(lower=0).round(2)
-    df_chart = pd.concat([leaf_age_her, leaf_age_cul], axis=1)
-    df_chart.columns = ['除草剤起点', '耕起起点']
-    df_chart.iloc[0] = [measured_la, measured_la]
+    leaf_age_kan = ((temp_df - 7.0) * 0.0237).clip(lower=0).round(2)
+    leaf_age_tan = ((temp_df - 9.0) * 0.0255).clip(lower=0).round(2)
+    leaf_age_ish = ((temp_df - 3.0) * 0.0143).clip(lower=0).round(2)
+    df_chart = pd.concat([leaf_age_kan, leaf_age_tan, leaf_age_ish], axis=1)
+    df_chart.columns = ['乾直', '湛直', '移植']
+    df_chart.iloc[0] = [measured_la, measured_la, measured_la]
     df_chart = df_chart.cumsum()
     st.header('予測結果')
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df_chart.index, y=df_chart['除草剤起点'],
-                             name='除草剤散布後', line=dict(color='lightgreen')))
-    fig.add_trace(go.Scatter(x=df_chart.index, y=df_chart['耕起起点'],
-                             name='耕起後', line=dict(color='orange')))
+    fig.add_trace(go.Scatter(x=df_chart.index, y=df_chart['乾直'],
+                             name='西日本-乾直', line=dict(color='lightgreen')))
+    fig.add_trace(go.Scatter(x=df_chart.index, y=df_chart['移植'],
+                             name='宮城-移植', line=dict(color='orange')))
+    fig.add_trace(go.Scatter(x=df_chart.index, y=df_chart['湛直'],
+                             name='青森-湛直', line=dict(color='pink')))
     fig.update_layout(xaxis=dict(title='年/月/日', dtick=3),
                       yaxis=dict(title='ノビエ葉齢（葉）', range=(0, 7), dtick=1),
                       legend=dict(x=0.05, y=0.95, ))
@@ -56,4 +59,5 @@ if submit_button:
     fig.update_layout(hovermode='x unified')
 
     st.plotly_chart(fig, use_container_width=True)
+    st.text('葉齢の推移')
     st.dataframe(df_chart, width=270)
