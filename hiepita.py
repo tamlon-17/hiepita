@@ -17,10 +17,10 @@ city_l = ['仙台市', '青葉区', '宮城野区', '若林区', '太白区', '�
 
 st.set_page_config(page_title='ひえピタ', page_icon='icon.ico')
 st.title('ひえピタ')
-st.caption('乾田直播のノビエの葉齢進展をピタっと予測するアプリだよ(/・ω・)/')
-st.text('西日本のデータを使った予測です。')
+st.caption('ノビエの葉齢進展を予測するアプリだよ(/・ω・)/')
+st.text('有効積算気温と葉齢の推定式を使って、葉齢を予測しています。')
 st.text('実際のほ場でノビエの葉齢を確認し、散布時期を逃さないように注意してください。')
-if st.button('アプリの説明～まずは読んでみてケロ！'):
+if st.button('アプリの説明～まずはここを読んでみて！'):
     st.switch_page('pages/readme.py')
 
 with st.form(key='input_form'):
